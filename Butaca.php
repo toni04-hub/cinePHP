@@ -12,10 +12,10 @@ Class Butaca
     }
 
     public function getLetra(){
-        return $this->letra;
+        return $this->_letra;
     }
     public function setLetra($letra){
-        $this->_letra = $letra;
+        $this->_letra = $_letra;
     }
     public function getfila(){
         return $this->_fila;
