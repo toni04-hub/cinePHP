@@ -16,14 +16,41 @@ class Cine
         $this->_pelicula =  $pelicula;
         $this->_rellenarButacas();
     }
+
+    public function setButacas($butacas)
+    {
+        $this->_butacas = $butacas;
+    }
+
     public function getButacas()
     {
         return $this->_butacas;
     }
+
+    public function getPrecio()
+    {
+        return $this->_precio;
+    }
+
+    public function setPrecio($precio)
+    {
+        $this->_precio = $precio;
+    }
+
+    public function getPelicula()
+    {
+        return $this->_getPelicula;
+    }
+
+    public function setPelicula(Pelicula $pelicula)
+    {
+        $this->_pelicula = $pelicula;
+    }
+
     private function _rellenarButacas()
     {
         $fila = $this->_filas;
-        
+
         for ($i  = 0; $i < $this->_filas; $i++) {
             $letra = 'A';
             for ($j = 0; $j < $this->_columnas; $j++) {
@@ -32,12 +59,13 @@ class Cine
             $fila--;
         }
     }
+
     public function haySitio()
     {
         for ($i = 0; $i < $this->_filas; $i++) {
             for ($j  = 0; $j < $this->_columnas; $j++) {
                 $butaca = $this->_butacas[$i][$j];
-                if ($butaca->ocupado()){   
+                if ($butaca->ocupado()) {
                     return true;
                 }
             }
@@ -45,21 +73,40 @@ class Cine
         return false;
     }
 
-    public function sentar($fila, $letra, Espectador $e){
-            $butaca = $this->_butacas[$fila][$letra];
-            $butaca->setEspectador($e);
-            //var_dump($this->_butacas[$fila][$letra]);
+    public function haySitioButaca($fila,$columna){
+        $butaca = $this->getButaca($fila,$columna);
+        return $butaca->ocupado();
     }
-    public function printSala(){
+
+    public function getButaca($fila, $columna) {
+        return $this->_butacas[$fila][$columna];
+    }
+
+    public function sePuedeSentar(Espectador $e){
+        //si tiene dinero, y no esta ocupado
+
+    }
+
+    public function sentar($fila, $letra, Espectador $e)
+    {
+        $butaca = $this->_butacas[$fila][$letra];
+        $butaca->setEspectador($e);
+    }
+
+    public function printSala()
+    {
+        echo "<table>";
+
         for ($i = 0; $i < $this->_filas; $i++) {
+            echo "<tr>";
             for ($j  = 0; $j < $this->_columnas; $j++) {
                 $butaca = $this->_butacas[$i][$j];
-                $ocupado = ($butaca->ocupado()) ? "*" : "";
-                $b = "{$butaca->getFila()}{$butaca->getLetra()}{$ocupado}    ";
-                echo $b;
+                $ocupado = ($butaca->ocupado()) ? "**" : "__";
+                $b = "{$butaca->getFila()}{$butaca->getLetra()}{$ocupado}";
+                echo "<td>$b</td>";
             }
-            echo "<br><br>";
+            echo "</tr>";
         }
+        echo "</table>";
     }
-    
 }
