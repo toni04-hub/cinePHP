@@ -4,6 +4,7 @@
  * a la informacion del espectador
  * @author toniuep
  */
+
 Class Espectador{
     //propiedades
     private $_nombre;
