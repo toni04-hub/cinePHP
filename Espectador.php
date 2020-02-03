@@ -11,6 +11,12 @@ Class Espectador{
     private $_edad;
     private $_dinero;
 
+    /**
+     * constructor Espectador
+     * @param $nombre
+     * @param $edad 
+     * @param $dinero 
+     */
     public function __construct($nombre, $edad = null, $dinero = 0){
         $this->_nombre = $nombre;
         $this->_edad = $edad;
@@ -45,14 +51,20 @@ Class Espectador{
     public function pagar($precio){
         return $this->_dinero -= $precio;
     }
-
+    /** tiene la edad minima
+     * @param $edadMinima
+     */
     public function tieneEdad($edadMinima){
         return $this->_edad < $edadMinima;
     }
 
+    /** tiene dinero suficiente
+     * @param $precioEntrada
+     */
     public function tieneDinero($precioEntrada){
         return $this->_dinero > $precioEntrada;
     }
+
 
     public function info(){
         //imprime info del Espectador

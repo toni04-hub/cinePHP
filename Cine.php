@@ -47,6 +47,15 @@ class Cine
         $this->_pelicula = $pelicula;
     }
 
+    public function getFilas()
+    {
+        return $this->_filas;
+    }
+    public function getColumnas()
+    {
+        return $this->_columnas;
+    }
+
     private function _rellenarButacas()
     {
         $fila = $this->_filas;
@@ -54,7 +63,7 @@ class Cine
         for ($i  = 0; $i < $this->_filas; $i++) {
             $letra = 'A';
             for ($j = 0; $j < $this->_columnas; $j++) {
-                $this->_butacas[$i][$j] = new Butaca($letra++, $fila);
+                $this->_butacas[$i][$j] = new Butaca($fila,$letra++);
             }
             $fila--;
         }
@@ -73,24 +82,31 @@ class Cine
         return false;
     }
 
-    public function haySitioButaca($fila,$columna){
-        $butaca = $this->getButaca($fila,$columna);
+    public function haySitioButaca($fila, $letra)
+    {
+        
+        $butaca = $this->getButaca($fila, $letra);
         return $butaca->ocupado();
+    } 
+
+    public function getButaca($fila, $letra)
+    {   
+        $col = ord($letra) - ord('A');
+        $fil = $this->getFilas() - $fila;
+        return $this->_butacas[$fil][$col];
     }
 
-    public function getButaca($fila, $columna) {
-        return $this->_butacas[$fila][$columna];
-    }
-
-    public function sePuedeSentar(Espectador $e){
+    public function sePuedeSentar(Espectador $e)
+    {
         //si tiene dinero, y no esta ocupado
-
+        $s = $e->tieneDinero($this->_precio) && $e->tieneEdad($this->_pelicula->getEdadMin());
+        return $s;
     }
 
     public function sentar($fila, $letra, Espectador $e)
-    {
-        $butaca = $this->_butacas[$fila][$letra];
-        $butaca->setEspectador($e);
+    {   
+        $this->getButaca($fila,$letra)->setEspectador($e);
+        
     }
 
     public function printSala()
