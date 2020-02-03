@@ -38,7 +38,11 @@ CLass Pelicula
         $this->_director = $director;
     }
 
-    public function info(){
+    public function getInfo(){
         //imprime informacion de la pelicula
+        $info = "{$this->_titulo} del director {$this->_director} ,
+        duracion {$this->_duracion} minutos. Edad {$this->_edadMin} años<br><br>";
+
+        return $info;
     }
 }

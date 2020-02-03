@@ -14,7 +14,8 @@ class Cine
         $this->_columnas = $columnas;
         $this->_precio = $precio;
         $this->_pelicula =  $pelicula;
-        $this->_rellenarButacas();
+        //$this->_rellenarButacas();
+        $this->llenarArrayConButacas();
     }
 
     public function setButacas($butacas)
@@ -55,6 +56,16 @@ class Cine
     {
         return $this->_columnas;
     }
+
+    public function llenarArrayConButacas(){
+        for($i = 0; $i < $this->_filas; $i++){
+            for($j = 0; $j < $this->_columnas; $j++){
+                $this->_butacas[$i][$j] = new Butaca($i+1, $j+1);
+            }
+        }
+    }
+    
+
 
     private function _rellenarButacas()
     {

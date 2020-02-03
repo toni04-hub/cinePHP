@@ -10,9 +10,9 @@ Class Butaca
 {   
     /**
      * Propiedades
-     * @var $_letra Character
-     * @var $_fila Integer
-     * @var $_espectador Espectador
+     * @var Char $_letra
+     * @var Int $_fila Integer
+     * @var Espectador $_espectador
      */
     private $_letra;
     private $_fila;
@@ -20,8 +20,8 @@ Class Butaca
 
     /**
      * Constructor Butaca
-     * @param $letra Char
-     * @param $fila Int
+     * @param Char $letra
+     * @param Int $fila
      */
     public function __construct($fila, $letra){
         $this->_fila = $fila;
@@ -55,7 +55,7 @@ Class Butaca
         return !is_null($this->_espectador);
     }
 
-    public function info(){
+    public function getInfo(){
         //imprime informacion del asiento
     }
 }
