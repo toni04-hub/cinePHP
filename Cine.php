@@ -14,8 +14,8 @@ class Cine
         $this->_columnas = $columnas;
         $this->_precio = $precio;
         $this->_pelicula =  $pelicula;
-        //$this->_rellenarButacas();
-        $this->llenarArrayConButacas();
+        $this->_rellenarButacas();
+        //$this->llenarArrayConButacas();
     }
 
     public function setButacas($butacas)
@@ -57,13 +57,15 @@ class Cine
         return $this->_columnas;
     }
 
-    public function llenarArrayConButacas(){
-        for($i = 0; $i < $this->_filas; $i++){
-            for($j = 0; $j < $this->_columnas; $j++){
-                $this->_butacas[$i][$j] = new Butaca($i+1, $j+1);
-            }
-        }
-    }
+    // public function llenarArrayConButacas(){
+    //     $contadorFila = $this->_filas;
+    //     for($i = 0; $i < $this->_filas; $i++){
+    //         for($j = 0; $j < $this->_columnas; $j++){
+    //             $this->_butacas[$i][$j] = new Butaca($contadorFila, $j+1);
+    //         }
+    //         $contadorFila--;
+    //     }
+    // }
     
 
 
@@ -72,7 +74,7 @@ class Cine
         $fila = $this->_filas;
 
         for ($i  = 0; $i < $this->_filas; $i++) {
-            $letra = 'A';
+            $letra = ord('A');
             for ($j = 0; $j < $this->_columnas; $j++) {
                 $this->_butacas[$i][$j] = new Butaca($fila,$letra++);
             }
@@ -100,12 +102,7 @@ class Cine
         return $butaca->ocupado();
     } 
 
-    public function getButaca($fila, $letra)
-    {   
-        $col = ord($letra) - ord('A');
-        $fil = $this->getFilas() - $fila;
-        return $this->_butacas[$fil][$col];
-    }
+    
 
     public function sePuedeSentar(Espectador $e)
     {
@@ -113,11 +110,24 @@ class Cine
         $s = $e->tieneDinero($this->_precio) && $e->tieneEdad($this->_pelicula->getEdadMin());
         return $s;
     }
-
+    /**
+     * Devuelve un objeto Butaca segun la fila y la letra
+     * @param Int $fila 
+     * @param Char $letra
+     * @return Butaca 
+     */
+    public function getButaca($fila, $letra){
+        $fil = $this->getFilas() - $fila;
+        $col = ord($letra) - ord('A');
+        return $this->_butacas[$fil][$col];
+    }
+    
+    
     public function sentar($fila, $letra, Espectador $e)
     {   
-        $this->getButaca($fila,$letra)->setEspectador($e);
-        
+       //Necesitamos un objeto Butaca donde sentar al espectador
+        $this->getButaca($fila, $letra)
+             ->setEspectador($e);
     }
 
     public function printSala()
@@ -129,7 +139,7 @@ class Cine
             for ($j  = 0; $j < $this->_columnas; $j++) {
                 $butaca = $this->_butacas[$i][$j];
                 $ocupado = ($butaca->ocupado()) ? "**" : "__";
-                $b = "{$butaca->getFila()}{$butaca->getLetra()}{$ocupado}";
+                $b = "{$butaca->getFila()}".chr($butaca->getLetra()).$ocupado;
                 echo "<td>$b</td>";
             }
             echo "</tr>";
