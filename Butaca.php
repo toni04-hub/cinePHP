@@ -49,7 +49,7 @@ Class Butaca
 
     /**
      * indica si el asiento esta ocupado
-     * @return
+     * @return Boolean
      */
     public function ocupado(){
         return !is_null($this->_espectador);

@@ -10,6 +10,12 @@ th, td {
   padding: 15px;
   text-align: left;
 }
+.ocupado{
+  background-color: red;
+}
+.libre{
+  background-color: gray;
+}
 </style>
 <?php
 require_once "Pelicula.php";
@@ -19,14 +25,20 @@ require_once "Espectador.php";
 $peli = new Pelicula("Lo que el código se llevó",120 ,89 , "Pepito Grillo");
 echo "<h1>{$peli->getInfo()}</h1>";
 
-$cine = new Cine(7,7,22,$peli);
+$cine = new Cine(7,20,40,$peli);
 
-$pepito = new Espectador("Pepito Grillo", 55, 100);
-$cine->sentar(2,'B',$pepito);
 
+//creamos un array de nombres para generar espectadores
+$nombres = ['Susana', 'Raúl', 'Delia', 'Xavi', 'Miguel Angel'];
+$butacasOcupadas = $cine->generarEspectadoresRandom(30, $nombres, 16, 30);
 //Llamamos a la función printButacas
 //printButacas($cine);
 
+//var_dump($butacasOcupadas);
+
+?>
+<h2>Sala del cine</h2>
+<?php
 $cine->printSala();
 //crea una funcion que imprima una tabla html que en cada celda aparezca 
 //la fila y la columna de la butaca
@@ -47,42 +59,27 @@ $cine->printSala();
 
 //     echo "</table>";
 // }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// $pelicula = new Pelicula("Batman", 120, 16, "toniuep");
-// $cine = new Cine(8,9,22,$pelicula);
-
-// $cine->sentar(1,'A',new Espectador("toni", 37, 30));
-// $cine->sentar(2,'B',new Espectador("Pep", 33, 20));
-// $cine->sentar(3,'A',new Espectador("Guiem", 33, 20));
-// $cine->sentar(4,'A',new Espectador("Juana", 33, 20));
-// for($i = 0;$i<count($cine->getButacas());$i++){
-//     //var_dump($cine->getButacas()[$i]);
-// }
-
-// $cine->printSala();
-
-// var_dump($cine->getButaca(1,'A'));
-
-/*$n = ord('A');
-$c = chr(66);
-echo $c;
-echo $n;*/
+?>
+<h2>Detalle espectadores</h2>
+<!--Ejercicio: Imprime una tabla con la informacion del Espectador
+y fila y letra de la butaca correspondiente-->
+<table>
+  <tr>
+    <th>Nombre</th>
+    <th>Edad</th>
+    <th>Dinero</th>
+    <th>Fila</th>
+    <th>Letra</th>
+  </tr>
+  <?php
+    foreach($butacasOcupadas as $butacaOcupada){
+      echo "<tr>
+                <td>{$butacaOcupada->getEspectador()->getNombre()}</td>
+                <td>{$butacaOcupada->getEspectador()->getEdad()}</td>
+                <td>{$butacaOcupada->getEspectador()->getDinero()}</td>
+                <td>{$butacaOcupada->getFila()}</td>
+                <td>{$butacaOcupada->getLetra()}</td>
+            </tr>";
+    }
+    ?>
+</table>

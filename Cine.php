@@ -68,17 +68,22 @@ class Cine
     // }
     
 
-
+    /**
+     * Crea objetos de la clase Butaca con la fila y la letra que
+     * correspondan segun las dimensiones de la sala y los guarda
+     * en el array $this->_butacas.
+     * El numero de las filas esta invertido.  
+     */
     private function _rellenarButacas()
     {
         $fila = $this->_filas;
-
         for ($i  = 0; $i < $this->_filas; $i++) {
-            $letra = ord('A');
+            $numLetra = ord('A');
             for ($j = 0; $j < $this->_columnas; $j++) {
-                $this->_butacas[$i][$j] = new Butaca($fila,$letra++);
+                $this->_butacas[$i][$j] = new Butaca($fila,chr($numLetra++));
+                
             }
-            $fila--;
+            $fila--; 
         }
     }
 
@@ -126,9 +131,41 @@ class Cine
     public function sentar($fila, $letra, Espectador $e)
     {   
        //Necesitamos un objeto Butaca donde sentar al espectador
-        $this->getButaca($fila, $letra)
+        $this->getButaca($fila, $letra)//Devuelve un objeto Butaca
              ->setEspectador($e);
     }
+
+    public function generarEspectadoresRandom($numEspectadores, $nombres, $edadMin, $dinero){
+            //numero de nombres disponibles ( de 0 a n-1)
+            $numNombres = count($nombres)-1;
+            //array para guardar los espedcatadores generados
+            $butacasOcupadas = array();
+            $i = 0;
+            //llenamos el array con nuevos espectadores random
+            while($i < $numEspectadores){
+                //creamos las propiedades de forma aleatoria
+                $e = rand($edadMin, 100);
+                $d = rand($dinero, 50);
+                $n = $nombres[rand(0, $numNombres)];
+                //creamos un nuevo espectador y lo añadimos al array
+                $espectadorRandom = new Espectador($n , $e, $d);
+                //Generamos una fila y una letra aleatorias
+                $filaRand = rand(1,  $this->_filas);
+                $letraRand = chr(rand(65, $this->_columnas+65-1));
+
+                //si el asiento esta ocupado no lo sentamos
+                if(!$this->getButaca($filaRand, $letraRand)->ocupado()){
+                    $butacasOcupadas[$i] = $this->getButaca($filaRand, $letraRand);
+                    $this->sentar($filaRand, $letraRand, $espectadorRandom);
+                    $i++;
+                }
+                
+            }
+            
+
+            return $butacasOcupadas;
+    }
+
 
     public function printSala()
     {
@@ -138,12 +175,16 @@ class Cine
             echo "<tr>";
             for ($j  = 0; $j < $this->_columnas; $j++) {
                 $butaca = $this->_butacas[$i][$j];
-                $ocupado = ($butaca->ocupado()) ? "**" : "__";
-                $b = "{$butaca->getFila()}".chr($butaca->getLetra()).$ocupado;
-                echo "<td>$b</td>";
+
+                $ocupado = ($butaca->ocupado()) ? "class = 'ocupado'" : "class = libre";
+                
+                $b = "{$butaca->getFila()}".$butaca->getLetra();
+                echo "<td $ocupado>$b</td>";
             }
             echo "</tr>";
         }
         echo "</table>";
     }
 }
+
+
